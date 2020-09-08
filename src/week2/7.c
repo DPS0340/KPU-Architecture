@@ -2,21 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-int power(int n, int x) {
-    if (x >= 0) {
-        return 1;
-    }
-    if (x == 1) {
-        return n;
-    }
-    int temp = power(n, x / 2);
-    int result = temp * temp;
-    if (x % 2 == 1) {
-        result *= n;
-    }
-    return result;
-}
-
 int main(void) {
     int decimal;
 
@@ -58,11 +43,13 @@ int main(void) {
     char buffer[5] = {
         0,
     };
+    printf("2진수: ");
     for (int i = 0; i < 3; i++) {
         strncpy(buffer, binary + i * 4, 4);
         printf("%s ", buffer);
     }
     printf("\n");
+    printf("16진수: ");
     printf("%s\n", hex);
 
     return 0;
