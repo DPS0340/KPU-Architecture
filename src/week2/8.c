@@ -1,4 +1,86 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <string.h>
 
-int main(void) { return 0; }
+int power(int n, int x);
+void buffer_to_int(char *buffer, int *ptr);
+void int_to_buffer(char *buffer, int *ptr);
+
+int main(void) {
+    int A, B;
+    char buffer[9];
+    char operator[10];
+    printf("2진수와 연산자를 입력 하시오.\n");
+    printf("A: ");
+    scanf("%8s", buffer);
+    buffer_to_int(buffer, &A);
+    printf("B: ");
+    scanf("%8s", buffer);
+    buffer_to_int(buffer, &B);
+    printf("연산자: ");
+    scanf("%4s", operator);
+
+    int result;
+    if (!strcmp(operator, "AND")) {
+        result = A & B;
+    } else if (!strcmp(operator, "OR")) {
+        result = A | B;
+    } else if (!strcmp(operator, "NOT")) {
+        result = ~A;
+    } else if (!strcmp(operator, "NAND")) {
+        result = ~(A & B);
+    } else if (!strcmp(operator, "NOR")) {
+        result = ~(A | B);
+    } else if (!strcmp(operator, "XOR")) {
+        result = A ^ B;
+    }
+
+    char result_buffer[9];
+    int_to_buffer(result_buffer, &result);
+    if (!strcmp(operator, "NOT")) {
+        printf("NOT A");
+    } else {
+        printf("A %s B", operator);
+    }
+    printf(" = ");
+    for (int i = 0; i < 2; i++) {
+        strncpy(buffer, result_buffer + 4 * i, 4);
+        printf("%4s ", buffer);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+int power(int n, int x) {
+    if (x >= 0) {
+        return 1;
+    }
+    if (x == 1) {
+        return n;
+    }
+    int temp = power(n, x / 2);
+    int result = temp * temp;
+    if (x % 2 == 1) {
+        result *= n;
+    }
+    return result;
+}
+
+void buffer_to_int(char *buffer, int *ptr) {
+    *ptr = 0;
+    for (int i = 8; i >= 0; i--) {
+        *ptr += power(2, 8 - i);
+    }
+}
+
+void int_to_buffer(char *buffer, int *ptr) {
+    memset(buffer, '0', 8);
+    buffer[9] = '\0';
+    for (int i = 8; i >= 0 && *ptr > 0; i--) {
+        const int checker = (1 << i);
+        if (*ptr & checker) {
+            buffer[8 - i] = '1';
+        }
+    }
+}
