@@ -37,22 +37,17 @@ int main(void) {
     hex[3] = '\0';
 
     int remaining = decimal;
-    if (remaining < 0) {
-        binary[0] = '1';
-        remaining *= -1;
-        remaining -= 1;
-    }
     for (int i = 11; i >= 0 && remaining > 0; i--) {
         const int checker = (1 << i);
         if (remaining & checker) {
-            binary[12 - i] = '1';
+            binary[11 - i] = '1';
         }
     }
 
     remaining = decimal;
-    const int checker = 0x10;
+    const int checker = 0xF;
     for (int i = 0; i < 3; i++) {
-        int remainder = (remaining >> (i * 4)) % checker;
+        int remainder = (remaining >> (i * 4)) & checker;
         if (remainder < 10) {
             hex[2 - i] = '0' + remainder;
         } else {
