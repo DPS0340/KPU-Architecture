@@ -4,18 +4,31 @@
 
 int power(int n, int x);
 void buffer_to_int(char *buffer, int *ptr);
-void int_to_buffer(char *buffer, int *ptr);
+void int_to_buffer(char *buffer, int num);
+
+void __strcpy(char *dest, char *src1, char *src2) {
+    for (int i = 0; i < 4; i++) {
+        dest[i] = src1[i];
+    }
+    for (int i = 0; i < 4; i++) {
+        dest[4 + i] = src2[i];
+    }
+    dest[8] = '\0';
+}
 
 int main(void) {
     int A, B;
     char buffer[9];
+    char buffer2[5], buffer3[5];
     char operator[10];
     printf("2진수와 연산자를 입력 하시오.\n");
     printf("A: ");
-    scanf("%8s", buffer);
+    scanf("%4s %4s", buffer2, buffer3);
+    __strcpy(buffer, buffer2, buffer3);
     buffer_to_int(buffer, &A);
     printf("B: ");
-    scanf("%8s", buffer);
+    scanf("%4s %4s", buffer2, buffer3);
+    __strcpy(buffer, buffer2, buffer3);
     buffer_to_int(buffer, &B);
     printf("연산자: ");
     scanf("%4s", operator);
@@ -36,7 +49,8 @@ int main(void) {
     }
 
     char result_buffer[9];
-    int_to_buffer(result_buffer, &result);
+    char print_buffer[5];
+    int_to_buffer(result_buffer, result);
     if (!strcmp(operator, "NOT")) {
         printf("NOT A");
     } else {
@@ -44,8 +58,8 @@ int main(void) {
     }
     printf(" = ");
     for (int i = 0; i < 2; i++) {
-        strncpy(buffer, result_buffer + 4 * i, 4);
-        printf("%4s ", buffer);
+        strncpy(print_buffer, result_buffer + 4 * i, 4);
+        printf("%4s ", print_buffer);
     }
     printf("\n");
 
@@ -74,12 +88,12 @@ void buffer_to_int(char *buffer, int *ptr) {
     }
 }
 
-void int_to_buffer(char *buffer, int *ptr) {
+void int_to_buffer(char *buffer, int num) {
     memset(buffer, '0', 8);
     buffer[9] = '\0';
-    for (int i = 8; i >= 0 && *ptr > 0; i--) {
+    for (int i = 8; i >= 0 && num > 0; i--) {
         const int checker = (1 << i);
-        if (*ptr & checker) {
+        if (num & checker) {
             buffer[8 - i] = '1';
         }
     }
