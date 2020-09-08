@@ -22,7 +22,7 @@ int main(void) {
     hex[3] = '\0';
 
     int remaining = decimal;
-    for (int i = 11; i >= 0 && remaining > 0; i--) {
+    for (int i = 11; i >= 0; i--) {
         const int checker = (1 << i);
         if (remaining & checker) {
             binary[11 - i] = '1';

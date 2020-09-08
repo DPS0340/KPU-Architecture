@@ -21,32 +21,43 @@ int main(void) {
     char buffer[9];
     char buffer2[5], buffer3[5];
     char operator[10];
+    memset(operator, 0, 10);
+
     printf("2진수와 연산자를 입력 하시오.\n");
+
     printf("A: ");
     scanf("%4s %4s", buffer2, buffer3);
     __strcpy(buffer, buffer2, buffer3);
     buffer_to_int(buffer, &A);
+
     printf("B: ");
     scanf("%4s %4s", buffer2, buffer3);
     __strcpy(buffer, buffer2, buffer3);
     buffer_to_int(buffer, &B);
-    printf("연산자: ");
-    scanf("%4s", operator);
 
     int result;
-    if (!strcmp(operator, "AND")) {
-        result = A & B;
-    } else if (!strcmp(operator, "OR")) {
-        result = A | B;
-    } else if (!strcmp(operator, "NOT")) {
-        result = ~A;
-    } else if (!strcmp(operator, "NAND")) {
-        result = ~(A & B);
-    } else if (!strcmp(operator, "NOR")) {
-        result = ~(A | B);
-    } else if (!strcmp(operator, "XOR")) {
-        result = A ^ B;
-    }
+    int resCode = 0;
+    do {
+        printf("연산자: ");
+        scanf("%4s", operator);
+        resCode = 0;
+        if (!strcmp(operator, "AND")) {
+            result = A & B;
+        } else if (!strcmp(operator, "OR")) {
+            result = A | B;
+        } else if (!strcmp(operator, "NOT")) {
+            result = ~A;
+        } else if (!strcmp(operator, "NAND")) {
+            result = ~(A & B);
+        } else if (!strcmp(operator, "NOR")) {
+            result = ~(A | B);
+        } else if (!strcmp(operator, "XOR")) {
+            result = A ^ B;
+        } else {
+            printf("잘못된 연산자입니다.\n");
+            resCode = 1;
+        }
+    } while (resCode);
 
     char result_buffer[9];
     char print_buffer[5];
@@ -56,6 +67,7 @@ int main(void) {
     } else {
         printf("A %s B", operator);
     }
+
     printf(" = ");
     for (int i = 0; i < 2; i++) {
         strncpy(print_buffer, result_buffer + 4 * i, 4);
@@ -67,7 +79,7 @@ int main(void) {
 }
 
 int power(int n, int x) {
-    if (x >= 0) {
+    if (x <= 0) {
         return 1;
     }
     if (x == 1) {
@@ -83,18 +95,20 @@ int power(int n, int x) {
 
 void buffer_to_int(char *buffer, int *ptr) {
     *ptr = 0;
-    for (int i = 8; i >= 0; i--) {
-        *ptr += power(2, 8 - i);
+    for (int i = 7; i >= 0; i--) {
+        if (buffer[i] == '1') {
+            *ptr += power(2, 7 - i);
+        }
     }
 }
 
 void int_to_buffer(char *buffer, int num) {
     memset(buffer, '0', 8);
-    buffer[9] = '\0';
-    for (int i = 8; i >= 0 && num > 0; i--) {
+    buffer[8] = '\0';
+    for (int i = 7; i >= 0; i--) {
         const int checker = (1 << i);
         if (num & checker) {
-            buffer[8 - i] = '1';
+            buffer[7 - i] = '1';
         }
     }
 }
