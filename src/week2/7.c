@@ -64,4 +64,6 @@ int main(void) {
     }
     printf("\n");
     printf("%s\n", hex);
+
+    return 0;
 }
