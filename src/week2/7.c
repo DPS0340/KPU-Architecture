@@ -21,6 +21,12 @@ int main(void) {
     memset(hex, '0', 3);
     hex[3] = '\0';
 
+    if (decimal < 0) {
+        decimal *= -1;
+        decimal -= 1;
+        decimal |= (1 << 11);
+    }
+
     int remaining = decimal;
     for (int i = 11; i >= 0; i--) {
         const int checker = (1 << i);
