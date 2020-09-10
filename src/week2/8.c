@@ -71,7 +71,7 @@ int main(void) {
     printf(" = ");
     for (int i = 0; i < 2; i++) {
         strncpy(print_buffer, result_buffer + 4 * i, 4);
-        printf("%4s ", print_buffer);
+        printf("%s ", print_buffer);
     }
     printf("\n");
 
